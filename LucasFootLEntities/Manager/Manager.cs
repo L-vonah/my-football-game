@@ -1,4 +1,5 @@
-﻿using LucasFoot.Entities.TeamModels.Team;
+﻿using LucasFoot.Entities.Competitions;
+using LucasFoot.Entities.TeamModels.Team;
 using System.ComponentModel.DataAnnotations;
 
 namespace LucasFoot.Entities.Manager;
@@ -11,11 +12,7 @@ public class TeamManager
     public string Name { get; set; } = null!;
     public Team? ActualTeam { get; set; }
 
-    public ICollection<Team> LastTeams { get; set; } = null!;
+    public ICollection<TeamManagerRecord> LastTeams { get; set; } = null!;
 
-    public List<Achievement> Achievements { get; set; } = null!;
-}
-
-public class Achievement
-{
+    public ICollection<Achievement> Achievements { get; set; } = null!;
 }

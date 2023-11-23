@@ -1,4 +1,5 @@
-﻿using LucasFoot.Entities.Manager;
+﻿using LucasFoot.Entities.Competitions;
+using LucasFoot.Entities.Manager;
 using LucasFoot.Entities.Player;
 
 namespace LucasFoot.Entities.TeamModels.Team;
