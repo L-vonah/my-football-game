@@ -1,4 +1,4 @@
-﻿namespace LucasFoot.Models.Player.Midfielder
+﻿namespace LucasFootEntities.Models.Player.Midfielder
 {
     public class DefensiveMidfielder : PlayerBase
     {

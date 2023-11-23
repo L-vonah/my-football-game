@@ -1,4 +1,4 @@
-﻿namespace LucasFoot.Models.Player.Forward
+﻿namespace LucasFootEntities.Models.Player.Forward
 {
     public class RightWinger : PlayerBase
     {

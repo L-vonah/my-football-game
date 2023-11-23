@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace LucasFoot.Models.Player
+namespace LucasFootEntities.Models.Player
 {
     public enum Position
     {

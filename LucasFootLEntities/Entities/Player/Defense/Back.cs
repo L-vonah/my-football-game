@@ -1,4 +1,4 @@
-﻿namespace LucasFoot.Models.Player.Defense
+﻿namespace LucasFootEntities.Models.Player.Defense
 {
     public class Goalkeeper : PlayerBase
     {
