@@ -16,8 +16,7 @@ namespace LucasFoot.Models.Player
         [Description("RW")] RightWinger,
         [Description("LW")] LeftWinger,
         [Description("SS")] SecondStriker,
-        [Description("CF")] CenterForward,
-        [Description("FW")] Forward
+        [Description("CF")] CenterForward
     }
 
     public enum Foot
