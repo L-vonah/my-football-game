@@ -1,9 +1,9 @@
-﻿using LucasFootEntities.Models.TeamModels.Team;
+﻿using LucasFoot.Entities.TeamModels.Team;
 using System.ComponentModel.DataAnnotations;
 
-namespace LucasFootEntities.Models.Manager;
+namespace LucasFoot.Entities.Manager;
 
-public class Manager
+public class TeamManager
 {
     public int Id { get; set; }
 

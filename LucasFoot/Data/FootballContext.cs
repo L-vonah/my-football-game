@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace LucasFoot.Data
+namespace LucasFoot.Data;
+
+public class FootballContext : DbContext
 {
-    public class FootballContext : DbContext
-    {
-    }
 }

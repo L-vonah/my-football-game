@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LucasFoot", "LucasFoot.csproj", "{C9DAF3EA-E75D-4E20-98B3-B0EA9F849858}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LucasFootEntities", "..\LucasFootLEntities\LucasFootEntities.csproj", "{E4405E0F-6854-444A-997B-837CC992823F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LucasFoot.Entities", "..\LucasFootLEntities\LucasFoot.Entities.csproj", "{E4405E0F-6854-444A-997B-837CC992823F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
