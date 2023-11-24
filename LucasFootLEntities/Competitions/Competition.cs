@@ -1,18 +1,24 @@
-﻿using System.ComponentModel;
-
-namespace LucasFoot.Entities.Competitions
+﻿namespace LucasFoot.Entities.Competitions
 {
-    public enum CompetitionType
-    {
-        [Description("Local")] Local,
-        [Description("National")] National,
-        [Description("Continental")] Continental,
-        [Description("World")] World
-    }
-    public class Competition
+    public abstract class Competition
     {
         public int Id { get; set; }
-        public string Name { get; set; } = null!;
-        public CompetitionType Type { get; set; }
+        public abstract string Name { get; }
+        public abstract CompetitionType Type { get; }
+        public abstract CompetitionFormat Format { get; }
+        public abstract int NumberOfTeams { get; }
+    }
+
+    public abstract class NationalCompetition : Competition
+    {
+        public abstract int Relegated { get; }
+        public abstract int Promoted { get; }
+    }
+
+    public abstract class MainNationalCompetition : NationalCompetition
+    {
+        public abstract int MainClassifiedDirectly { get; }
+        public abstract int MainClassifiedByPlayoff { get; }
+        public abstract int SecondaryClassified { get; }
     }
 }
