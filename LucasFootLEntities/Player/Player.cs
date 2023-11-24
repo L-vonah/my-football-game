@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using LucasFoot.Entities.TeamModels.Team;
+using System.ComponentModel;
 
 namespace LucasFoot.Entities.Player;
 
@@ -38,4 +39,6 @@ public abstract class PlayerBase
     public double Salary { get; set; }
     public int Goals { get; set; }
     public int Assists { get; set; }
+    public int TeamId { get; set; }
+    public Team Team { get; set; } = null!;
 }

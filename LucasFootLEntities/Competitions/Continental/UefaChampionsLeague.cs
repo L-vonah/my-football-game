@@ -2,7 +2,7 @@
 
 public class UefaChampionsLeague : ContinentalCompetition
 {
-    public int TeamsPerGroup => NumberOfTeams / NumberOfGroups;
+    public override int TeamsPerGroup => NumberOfTeams / NumberOfGroups;
     public override string Name => "UEFA Champions League";
     public override int ClassifiedByGroup => 2;
     public override int NumberOfGroups => 8;

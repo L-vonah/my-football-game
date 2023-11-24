@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -15,6 +15,10 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LucasFootLEntities\LucasFoot.Entities.csproj" />
   </ItemGroup>
 
 </Project>
