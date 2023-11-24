@@ -11,6 +11,7 @@ public abstract class Competition
     public abstract CompetitionFormat Format { get; }
     public abstract int NumberOfTeams { get; }
     public abstract string Discriminator { get; }
+    public ICollection<CompetitionTeam>? Teams { get; set; }
 }
 
 public abstract class NationalCompetition : Competition
@@ -22,7 +23,6 @@ public abstract class NationalCompetition : Competition
     public abstract LeagueDivision Division { get; }
     public abstract int Relegated { get; }
     public abstract int Promoted { get; }
-    public ICollection<TeamGroupOrLeague>? Teams { get; set; }
 }
 
 public abstract class MainNationalCompetition : NationalCompetition
@@ -33,13 +33,12 @@ public abstract class MainNationalCompetition : NationalCompetition
     public abstract int SecondaryClassified { get; }
 }
 
-public abstract class CupCompetition : Competition
+public abstract class KnockoutCompetition : Competition
 {
-    public override string Discriminator => nameof(CupCompetition);
+    public override string Discriminator => nameof(KnockoutCompetition);
     public override CompetitionType Type => CompetitionType.National;
     public override CompetitionFormat Format => CompetitionFormat.Knockout;
     public abstract KnockoutFormat KnockoutFormat { get; }
-    public ICollection<TeamCup>? Teams { get; set; }
 }
 
 public abstract class ContinentalCompetition : Competition
@@ -52,6 +51,4 @@ public abstract class ContinentalCompetition : Competition
     public abstract int ClassifiedByGroup { get; }
     public abstract int NumberOfGroups { get; }
     public abstract int TeamsPerGroup { get; }
-    public ICollection<TeamGroupOrLeague>? GroupTeams { get; set; }
-    public ICollection<TeamCup>? CupTeams { get; set; }
 }

@@ -26,16 +26,13 @@ public class Team
     }
 }
 
-public abstract class TeamCompetition
+public abstract class CompetitionTeam
 {
     public int TeamId { get; set; }
     public Team Team { get; set; } = null!;
-    public TeamLevel Level { get; set; }
-}
-
-public class TeamGroupOrLeague : TeamCompetition
-{
-    public int Position { get; set; }
+    public int CompetitionId { get; set; }
+    public Competition Competition { get; set; } = null!;
+    public int? FinalPosition { get; set; }
     public int Points { get; set; }
     public int Wins { get; set; }
     public int Draws { get; set; }
@@ -43,16 +40,25 @@ public class TeamGroupOrLeague : TeamCompetition
     public int GoalsFor { get; set; }
     public int GoalsAgainst { get; set; }
     public int GoalDifference => GoalsFor - GoalsAgainst;
+    public TeamLevel Level { get; set; }
+    public abstract string Discriminator { get; }
 }
 
-public class TeamCup : TeamCompetition
+public class GroupOrLeagueTeam : CompetitionTeam
 {
-    public int Position { get; set; }
-    public int Location { get; set; }
+    public int Classification { get; set; }
+    public override string Discriminator => nameof(GroupOrLeagueTeam);
+}
+
+public class KnockoutTeam : CompetitionTeam
+{
+    public int BracketLocation { get; set; }
+    public override string Discriminator => nameof(KnockoutTeam);
 }
 
 public class TeamManagerRecord
 {
+    public int Id { get; set; }
     public int TeamId { get; set; }
     public Team Team { get; set; } = null!;
     public int ManagerId { get; set; }

@@ -1,5 +1,6 @@
 ﻿using LucasFoot.Entities.Competitions;
 using LucasFoot.Entities.Manager;
+using LucasFoot.Entities.Player;
 using LucasFoot.Entities.TeamModels.Team;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,8 +10,17 @@ public class FootballContext : DbContext
 {
     public virtual DbSet<Achievement> Achievements { get; set; } = null!;
     public virtual DbSet<Competition> Competitions { get; set; } = null!;
-    public virtual DbSet<Team> Teams { get; set; } = null!;
+    public virtual DbSet<NationalCompetition> NationalCompetitions { get; set; } = null!;
+    public virtual DbSet<MainNationalCompetition> MainNationalCompetitions { get; set; } = null!;
+    public virtual DbSet<KnockoutCompetition> CupCompetitions { get; set; } = null!;
+    public virtual DbSet<ContinentalCompetition> ContinentalCompetitions { get; set; } = null!;
     public virtual DbSet<TeamManager> Managers { get; set; } = null!;
+    public virtual DbSet<TeamManagerRecord> TeamManagerRecords { get; set; } = null!;
+    public virtual DbSet<PlayerBase> Players { get; set; } = null!;
+    public virtual DbSet<Team> Teams { get; set; } = null!;
+    public virtual DbSet<CompetitionTeam> CompetitionTeams { get; set; } = null!;
+    public virtual DbSet<GroupOrLeagueTeam> GroupOrLeagueTeams { get; set; } = null!;
+    public virtual DbSet<KnockoutTeam> CupTeams { get; set; } = null!;
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,8 +35,42 @@ public class FootballContext : DbContext
             c.HasDiscriminator<string>("Discriminator")
                 .HasValue<NationalCompetition>(nameof(NationalCompetition))
                 .HasValue<MainNationalCompetition>(nameof(MainNationalCompetition))
-                .HasValue<CupCompetition>(nameof(CupCompetition))
+                .HasValue<KnockoutCompetition>(nameof(KnockoutCompetition))
                 .HasValue<ContinentalCompetition>(nameof(MainNationalCompetition));
+        });
+        modelBuilder.Entity<CompetitionTeam>(c =>
+        {
+            c.HasKey(c => new { c.TeamId, c.CompetitionId });
+            c.HasDiscriminator<string>("Discriminator")
+                .HasValue<GroupOrLeagueTeam>(nameof(GroupOrLeagueTeam))
+                .HasValue<KnockoutTeam>(nameof(KnockoutTeam));
+        });
+        modelBuilder.Entity<TeamManager>(t =>
+        {
+            t.HasKey(t => t.Id);
+            t.HasMany(t => t.Teams)
+                .WithOne(p => p.Manager)
+                .HasForeignKey(p => p.ManagerId);
+            t.HasMany(t => t.Achievements)
+                .WithOne(p => p.Manager)
+                .HasForeignKey(p => p.ManagerId);
+        });
+        modelBuilder.Entity<TeamManagerRecord>(t =>
+        {
+            t.HasKey(t => t.Id);
+            t.HasOne(t => t.Team)
+                .WithMany(p => p.Managers)
+                .HasForeignKey(p => p.TeamId);
+            t.HasOne(t => t.Manager)
+                .WithMany(p => p.Teams)
+                .HasForeignKey(p => p.ManagerId);
+        });
+        modelBuilder.Entity<PlayerBase>(p =>
+        {
+            p.HasKey(p => p.Id);
+            p.HasOne(p => p.Team)
+                .WithMany(t => t.Players)
+                .HasForeignKey(p => p.TeamId);
         });
         modelBuilder.Entity<Team>(t =>
         {
@@ -41,16 +85,6 @@ public class FootballContext : DbContext
             t.HasMany(t => t.Managers)
                 .WithOne(p => p.Team)
                 .HasForeignKey(p => p.TeamId);
-        });
-        modelBuilder.Entity<TeamManager>(t =>
-        {
-            t.HasKey(t => t.Id);
-            t.HasMany(t => t.LastTeams)
-                .WithOne(p => p.Manager)
-                .HasForeignKey(p => p.ManagerId);
-            t.HasMany(t => t.Achievements)
-                .WithOne(p => p.Manager)
-                .HasForeignKey(p => p.ManagerId);
         });
     }
 }
