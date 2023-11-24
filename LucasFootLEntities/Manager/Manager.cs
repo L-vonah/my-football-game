@@ -10,6 +10,7 @@ public class TeamManager
 
     [MaxLength(20)]
     public string Name { get; set; } = null!;
+    public int ActualTeamId { get; set; }
     public Team? ActualTeam { get; set; }
 
     public ICollection<TeamManagerRecord> LastTeams { get; set; } = null!;

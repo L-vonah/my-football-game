@@ -1,15 +1,12 @@
-﻿namespace LucasFoot.Entities.Competitions.Continental
-{
-    public class Libertadores : Competition
-    {
-        public static GroupFormat GroupFormat => GroupFormat.Double;
-        public static int ClassifiedByGroup => 2;
-        public static int NumberOfGroups => 8;
+﻿namespace LucasFoot.Entities.Competitions.Continental;
 
-        public override string Name => "Copa Libertadores";
-        public override int NumberOfTeams => 32;
-        public int TeamsPerGroup => NumberOfTeams / NumberOfGroups;
-        public override CompetitionType Type => CompetitionType.Continental;
-        public override CompetitionFormat Format => CompetitionFormat.GroupAndKnockout;
-    }
+public class Libertadores : ContinentalCompetition
+{
+    public int TeamsPerGroup => NumberOfTeams / NumberOfGroups;
+    public override string Name => "Copa Libertadores";
+    public override int ClassifiedByGroup => 2;
+    public override int NumberOfGroups => 8;
+    public override int NumberOfTeams => 32;
+    public override CompetitionType Type => CompetitionType.Continental;
+    public override CompetitionFormat Format => CompetitionFormat.GroupAndKnockout;
 }

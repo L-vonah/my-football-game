@@ -16,6 +16,7 @@
     }
 
     public enum LeagueFormat { Single, Double }
+    public enum LeagueDivision { First, Second, Third }
     public enum GroupFormat { Single, Double }
     public enum KnockoutFormat { Single, Double }
 }

@@ -26,6 +26,31 @@ public class Team
     }
 }
 
+public abstract class TeamCompetition
+{
+    public int TeamId { get; set; }
+    public Team Team { get; set; } = null!;
+    public TeamLevel Level { get; set; }
+}
+
+public class TeamGroupOrLeague : TeamCompetition
+{
+    public int Position { get; set; }
+    public int Points { get; set; }
+    public int Wins { get; set; }
+    public int Draws { get; set; }
+    public int Losses { get; set; }
+    public int GoalsFor { get; set; }
+    public int GoalsAgainst { get; set; }
+    public int GoalDifference => GoalsFor - GoalsAgainst;
+}
+
+public class TeamCup : TeamCompetition
+{
+    public int Position { get; set; }
+    public int Location { get; set; }
+}
+
 public class TeamManagerRecord
 {
     public int TeamId { get; set; }
@@ -35,3 +60,5 @@ public class TeamManagerRecord
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
 }
+
+public enum TeamLevel { Low, LowMedium, HighMedium, High }
