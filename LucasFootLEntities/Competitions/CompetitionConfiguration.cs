@@ -11,13 +11,11 @@
     public enum CompetitionFormat
     {
         League,
-        Cup,
-        LeagueAndCup,
+        Knockout,
         GroupAndKnockout
     }
 
     public enum LeagueFormat { Single, Double }
     public enum GroupFormat { Single, Double }
     public enum KnockoutFormat { Single, Double }
-
 }
