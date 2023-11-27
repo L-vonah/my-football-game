@@ -36,9 +36,27 @@ public abstract class PlayerBase
     public Foot Foot { get; set; }
     public int Energy { get; set; }
     public double Value { get; set; }
+    public double LastSalary { get; set; }
+    public int TotalGoals { get; set; }
+    public int TotalAssists { get; set; }
+    public int TotalYellowCards { get; set; }
+    public int TotalRedCards { get; set; }
+    public ICollection<TeamPlayerRecord> Teams { get; set; } = null!;
+}
+
+public class TeamPlayerRecord
+{
+    public Guid Id { get; set; }
+    public int TeamId { get; set; }
+    public Team Team { get; set; } = null!;
+    public int PlayerId { get; set; }
+    public PlayerBase Player { get; set; } = null!;
     public double Salary { get; set; }
     public int Goals { get; set; }
     public int Assists { get; set; }
-    public int TeamId { get; set; }
-    public Team Team { get; set; } = null!;
+    public int YellowCards { get; set; }
+    public int RedCards { get; set; }
+    public bool Active { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
 }

@@ -14,18 +14,18 @@ public class Team
 
     [MaxLength(50)]
     public string Name { get; set; } = null!;
-    public ICollection<PlayerBase> Players { get; set; } = null!;
     public ICollection<Achievement> Achievements { get; set; } = null!;
     public ICollection<TeamManagerRecord> Managers { get; set; } = null!;
+    public ICollection<TeamPlayerRecord> Players { get; set; } = null!;
 
     public bool CanAddPlayer(PlayerBase player)
     {
-        return Players.Count < MaxPlayers && !Players.Any(p => p.Id == player.Id);
+        return Players.Count < MaxPlayers && !Players.Any(p => p.Player.Id == player.Id);
     }
 
     public bool CanRemovePlayer(PlayerBase player)
     {
-        return Players.Count > MinPlayers && Players.Any(p => p.Id == player.Id);
+        return Players.Count > MinPlayers && Players.Any(p => p.Player.Id == player.Id);
     }
 }
 
@@ -61,7 +61,7 @@ public class KnockoutTeam : CompetitionTeam
 
 public class TeamManagerRecord
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public int TeamId { get; set; }
     public Team Team { get; set; } = null!;
     public int ManagerId { get; set; }

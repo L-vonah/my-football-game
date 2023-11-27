@@ -65,20 +65,26 @@ public class FootballContext : DbContext
                 .WithMany(p => p.Teams)
                 .HasForeignKey(p => p.ManagerId);
         });
+        modelBuilder.Entity<TeamPlayerRecord>(t =>
+        {
+            t.HasKey(t => t.Id);
+            t.HasOne(t => t.Team)
+                .WithMany(p => p.Players)
+                .HasForeignKey(p => p.TeamId);
+            t.HasOne(t => t.Player)
+                .WithMany(p => p.Teams)
+                .HasForeignKey(p => p.PlayerId);
+        });
         modelBuilder.Entity<PlayerBase>(p =>
         {
             p.HasKey(p => p.Id);
-            p.HasOne(p => p.Team)
-                .WithMany(t => t.Players)
-                .HasForeignKey(p => p.TeamId);
         });
         modelBuilder.Entity<Team>(t =>
         {
             t.HasKey(t => t.Id);
             t.HasMany(t => t.Players)
                 .WithOne(p => p.Team)
-                .HasForeignKey(p => p.TeamId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(p => p.TeamId);
             t.HasMany(t => t.Achievements)
                 .WithOne(p => p.Team)
                 .HasForeignKey(p => p.TeamId);
