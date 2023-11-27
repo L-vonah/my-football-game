@@ -36,7 +36,7 @@ public class FootballContext : DbContext
                 .HasValue<NationalCompetition>(nameof(NationalCompetition))
                 .HasValue<MainNationalCompetition>(nameof(MainNationalCompetition))
                 .HasValue<KnockoutCompetition>(nameof(KnockoutCompetition))
-                .HasValue<ContinentalCompetition>(nameof(MainNationalCompetition));
+                .HasValue<ContinentalCompetition>(nameof(ContinentalCompetition));
         });
         modelBuilder.Entity<CompetitionTeam>(c =>
         {

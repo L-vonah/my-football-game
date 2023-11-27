@@ -1,6 +1,7 @@
 ﻿using LucasFoot.Entities.Competitions;
 using LucasFoot.Entities.Manager;
 using LucasFoot.Entities.Player;
+using System.ComponentModel.DataAnnotations;
 
 namespace LucasFoot.Entities.TeamModels.Team;
 
@@ -10,6 +11,8 @@ public class Team
     public static readonly int MinPlayers = 11;
 
     public int Id { get; set; }
+
+    [MaxLength(50)]
     public string Name { get; set; } = null!;
     public ICollection<PlayerBase> Players { get; set; } = null!;
     public ICollection<Achievement> Achievements { get; set; } = null!;
@@ -17,12 +20,12 @@ public class Team
 
     public bool CanAddPlayer(PlayerBase player)
     {
-        return Players.Count < MaxPlayers && !Players.Any(p => p.Position == player.Position);
+        return Players.Count < MaxPlayers && !Players.Any(p => p.Id == player.Id);
     }
 
     public bool CanRemovePlayer(PlayerBase player)
     {
-        return Players.Count > MinPlayers && Players.Any(p => p.Position == player.Position);
+        return Players.Count > MinPlayers && Players.Any(p => p.Id == player.Id);
     }
 }
 
