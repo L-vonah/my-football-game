@@ -1,6 +1,6 @@
 ﻿namespace LucasFoot.Entities.Competitions.National;
 
-public class PremierLeague : MainNationalCompetition
+public class PremierLeague : MainLeagueCompetition
 {
     public override string Name => "Premier League";
     public override int MainClassifiedDirectly => 4;
@@ -10,4 +10,5 @@ public class PremierLeague : MainNationalCompetition
     public override int Promoted => 0;
     public override int NumberOfTeams => 20;
     public override LeagueDivision Division => LeagueDivision.First;
+    public override CompetitionLevel Level => CompetitionLevel.National;
 }

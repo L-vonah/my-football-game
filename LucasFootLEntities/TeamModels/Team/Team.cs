@@ -14,7 +14,8 @@ public class Team
 
     [MaxLength(50)]
     public string Name { get; set; } = null!;
-    public ICollection<Achievement> Achievements { get; set; } = null!;
+    public TeamLevel Level { get; set; }
+    public ICollection<CompetitionPlacement> Placements { get; set; } = null!;
     public ICollection<TeamManagerRecord> Managers { get; set; } = null!;
     public ICollection<TeamPlayerRecord> Players { get; set; } = null!;
 
@@ -35,7 +36,9 @@ public abstract class CompetitionTeam
     public Team Team { get; set; } = null!;
     public int CompetitionId { get; set; }
     public Competition Competition { get; set; } = null!;
+    public int? ActualPosition { get; set; }
     public int? FinalPosition { get; set; }
+    public int? BracketLocation { get; set; }
     public int Points { get; set; }
     public int Wins { get; set; }
     public int Draws { get; set; }
@@ -43,31 +46,17 @@ public abstract class CompetitionTeam
     public int GoalsFor { get; set; }
     public int GoalsAgainst { get; set; }
     public int GoalDifference => GoalsFor - GoalsAgainst;
-    public TeamLevel Level { get; set; }
+    public TeamLevel InitialLevel { get; init; }
     public abstract string Discriminator { get; }
 }
 
-public class GroupOrLeagueTeam : CompetitionTeam
+public enum TeamLevel
 {
-    public int Classification { get; set; }
-    public override string Discriminator => nameof(GroupOrLeagueTeam);
+    VeryLow = 0,
+    Low = 10,
+    LowMedium = 20,
+    Medium = 30,
+    HighMedium = 40,
+    High = 50,
+    VeryHigh = 60
 }
-
-public class KnockoutTeam : CompetitionTeam
-{
-    public int BracketLocation { get; set; }
-    public override string Discriminator => nameof(KnockoutTeam);
-}
-
-public class TeamManagerRecord
-{
-    public Guid Id { get; set; }
-    public int TeamId { get; set; }
-    public Team Team { get; set; } = null!;
-    public int ManagerId { get; set; }
-    public TeamManager Manager { get; set; } = null!;
-    public DateTime StartDate { get; set; }
-    public DateTime? EndDate { get; set; }
-}
-
-public enum TeamLevel { Low, LowMedium, HighMedium, High }

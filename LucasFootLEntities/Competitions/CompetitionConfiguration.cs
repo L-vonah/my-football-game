@@ -1,6 +1,6 @@
 ﻿namespace LucasFoot.Entities.Competitions
 {
-    public enum CompetitionType
+    public enum CompetitionLevel
     {
         Local,
         National,
@@ -12,11 +12,12 @@
     {
         League,
         Knockout,
-        GroupAndKnockout
+        LeagueAndKnockout
     }
 
     public enum LeagueFormat { Single, Double }
     public enum LeagueDivision { First, Second, Third }
     public enum GroupFormat { Single, Double }
     public enum KnockoutFormat { Single, Double }
+    public enum CompetitionRound { Final, Semifinal, Quarterfinal, RoundOf16, RoundOf32, RoundOf64, GroupStage }
 }

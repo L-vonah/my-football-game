@@ -1,5 +1,6 @@
 ﻿using LucasFoot.Entities.TeamModels.Team;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace LucasFoot.Entities.Player;
 
@@ -30,6 +31,8 @@ public enum Foot
 public abstract class PlayerBase
 {
     public int Id { get; set; }
+
+    [MaxLength(30)]
     public string Name { get; set; } = null!;
     public int Age { get; set; }
     public abstract Position Position { get; }
@@ -46,7 +49,6 @@ public abstract class PlayerBase
 
 public class TeamPlayerRecord
 {
-    public Guid Id { get; set; }
     public int TeamId { get; set; }
     public Team Team { get; set; } = null!;
     public int PlayerId { get; set; }
