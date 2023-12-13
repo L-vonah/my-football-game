@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Competitions\Continental\" />
     <Folder Include="Competitions\Global\" />
+    <Folder Include="Competitions\Local\" />
+    <Folder Include="Competitions\National\" />
     <Folder Include="TeamModels\Stadium\" />
   </ItemGroup>
 
