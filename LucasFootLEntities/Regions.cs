@@ -2,8 +2,18 @@
 
 namespace LucasFoot.Entities
 {
+    public enum Region
+    {
+        [Description("South America")] SAM,
+        [Description("Europe")] EUR,
+        [Description("Worldwide")] WLD,
+        [Description("Brazil")] BRA,
+        [Description("England")] ENG
+    }
+
     public enum BrazilState
     {
+        [Description("None")] None,
         [Description("Acre")] AC,
         [Description("Alagoas")] AL,
         [Description("Amapá")] AP,

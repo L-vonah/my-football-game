@@ -7,9 +7,11 @@ public class Libertadores : LeagueAndKnockoutCompetition
     public override int ClassifiedByGroup => 2;
     public override int NumberOfGroups => 8;
     public override int NumberOfTeams => 32;
+    public override Region Location => Region.SAM;
     public override CompetitionLevel Level => CompetitionLevel.Continental;
     public override CompetitionFormat Format => CompetitionFormat.LeagueAndKnockout;
     public override RelegationRule RelegationRule => RelegationRule.None;
+    public override BrazilState State => BrazilState.None;
 
     public Libertadores(int year) : base(year) { }
 }

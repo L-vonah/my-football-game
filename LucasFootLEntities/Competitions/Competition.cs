@@ -7,9 +7,11 @@ public abstract class Competition
     public int Id { get; set; }
     public int Year { get; set; }
     public abstract string Name { get; }
+    public abstract Region Location { get; }
     public abstract CompetitionLevel Level { get; }
     public abstract CompetitionFormat Format { get; }
     public abstract RelegationRule RelegationRule { get; }
+    public abstract BrazilState State { get; }
     public abstract int NumberOfTeams { get; }
     public abstract string Discriminator { get; }
     public ICollection<CompetitionTeam>? Teams { get; set; }
@@ -32,29 +34,27 @@ public abstract class LeagueCompetition : Competition
     public override string Discriminator => nameof(LeagueCompetition);
     public abstract LeagueDivision Division { get; }
 
-    public LeagueCompetition(int year) : base(year)
+    public LeagueCompetition(int promoted, int relegated, int year) : base(year)
     {
-        if (IsMainCompetition())
+        Relegated = relegated;
+        Promoted = promoted;
+
+        if (IsMainCompetition() && IsNationalCompetition())
         {
-            Relegated = 4;
-            Promoted = default;
             MainClassifiedDirectly = 4;
             MainClassifiedByPlayoff = 2;
             SecondaryClassified = 6;
-        }
-        else
-        {
-            Relegated = 4;
-            Promoted = 4;
-            MainClassifiedDirectly = default;
-            MainClassifiedByPlayoff = default;
-            SecondaryClassified = default;
         }
     }
 
     public bool IsMainCompetition()
     {
         return Division == LeagueDivision.First;
+    }
+
+    public bool IsNationalCompetition()
+    {
+        return Level == CompetitionLevel.National;
     }
 }
 
@@ -64,7 +64,7 @@ public abstract class KnockoutCompetition : Competition
     public override CompetitionFormat Format => CompetitionFormat.Knockout;
     public override RelegationRule RelegationRule => RelegationRule.None;
     public abstract KnockoutFormat KnockoutFormat { get; }
-    public CompetitionRound CompetitionRound { get; set; }
+    public CompetitionRound CompetitionActualRound { get; set; }
 
     public KnockoutCompetition(int year) : base(year) { }
 }
@@ -78,7 +78,7 @@ public abstract class LeagueAndKnockoutCompetition : Competition
     public abstract int ClassifiedByGroup { get; }
     public abstract int NumberOfGroups { get; }
     public abstract int TeamsPerGroup { get; }
-    public CompetitionRound CompetitionRound { get; set; }
+    public CompetitionRound CompetitionActualRound { get; set; }
 
     public LeagueAndKnockoutCompetition(int year) : base(year) { }
 }
