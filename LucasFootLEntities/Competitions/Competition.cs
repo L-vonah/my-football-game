@@ -5,16 +5,24 @@ namespace LucasFoot.Entities.Competitions;
 public abstract class Competition
 {
     public int Id { get; set; }
-    public int Year { get; set; }
-    public string Name { get; }
-    public int NumberOfTeams { get; }
-    public Region Region { get; }
-    public CompetitionLevel Level { get; }
-    public abstract CompetitionFormat Format { get; }
+    public int Year { get; private set; }
+    public int NumberOfTeams { get; private set; }
+    public string Name { get; private set; }
+    public CompetitionLevel Level { get; private set; }
+    public Region Region { get; private set; }
+    public abstract CompetitionFormat CompetitionFormat { get; }
+    public abstract LeagueDivision Division { get; }
     public abstract RelegationRule RelegationRule { get; }
     public abstract BrazilState State { get; }
     public abstract string Discriminator { get; }
     public ICollection<CompetitionTeam>? Teams { get; set; }
+
+    private CompetitionRound _round;
+    protected CompetitionRound ActualRound
+    {
+        get { return _round; }
+        set { _round = value; }
+    }
 
     public Competition(string name, int numberOfTeams, int year, Region region, CompetitionLevel level)
     {
@@ -26,24 +34,32 @@ public abstract class Competition
     }
 }
 
-public abstract class LeagueCompetition : Competition
+public class LeagueCompetition : Competition
 {
-    public int Relegated { get; private set; }
-    public int Promoted { get; private set; }
     public int MainClassifiedDirectly { get; private set; }
     public int MainClassifiedByPlayoff { get; private set; }
     public int SecondaryClassified { get; private set; }
-    public static LeagueFormat LeagueFormat => LeagueFormat.Double;
-    public override CompetitionFormat Format => CompetitionFormat.League;
+    public int Promoted { get; private set; }
+    public int Relegated { get; private set; }
+    public LeagueFormat LeagueFormat { get; private set; }
+    public override LeagueDivision Division { get; }
+    public override RelegationRule RelegationRule { get; }
+    public override BrazilState State { get; }
+    public override CompetitionFormat CompetitionFormat => CompetitionFormat.League;
     public override string Discriminator => nameof(LeagueCompetition);
-    public abstract LeagueDivision Division { get; }
 
-    public LeagueCompetition(string name, int numberOfTeams, int promoted, int relegated,
-                             Region region, CompetitionLevel level, int year)
+    public LeagueCompetition(string name, int numberOfTeams, int promoted, int relegated, int year,
+                             Region region, CompetitionLevel level, LeagueDivision division, LeagueFormat format,
+                             RelegationRule relegationRule, BrazilState? state = null)
         : base(name, numberOfTeams, year, region, level)
     {
-        Relegated = relegated;
         Promoted = promoted;
+        Relegated = relegated;
+        Division = division;
+        LeagueFormat = format;
+        RelegationRule = relegationRule;
+        State = state ?? BrazilState.None;
+        ActualRound = CompetitionRound.LeagueStage;
 
         if (IsMainCompetition() && IsNationalCompetition())
         {
@@ -62,37 +78,105 @@ public abstract class LeagueCompetition : Competition
     {
         return Level == CompetitionLevel.National;
     }
+
+    public CompetitionRound GetActualRound()
+    {
+        return ActualRound;
+    }
 }
 
-public abstract class KnockoutCompetition : Competition
+public class KnockoutCompetition : Competition
 {
-    public override string Discriminator => nameof(KnockoutCompetition);
-    public override CompetitionFormat Format => CompetitionFormat.Knockout;
+    public KnockoutFormat KnockoutFormat { get; private set; }
+    public override BrazilState State { get; }
+    public override CompetitionFormat CompetitionFormat => CompetitionFormat.Knockout;
+    public override LeagueDivision Division => LeagueDivision.None;
     public override RelegationRule RelegationRule => RelegationRule.None;
-    public abstract KnockoutFormat KnockoutFormat { get; }
-    public CompetitionRound CompetitionActualRound { get; set; }
+    public override string Discriminator => nameof(KnockoutCompetition);
 
-    public KnockoutCompetition(string name, int numberOfTeams, int year,
-                               Region region, CompetitionLevel level)
-        : base(name, numberOfTeams, year, region, level) { }
+    public KnockoutCompetition(string name, int numberOfTeams, int year, Region region, CompetitionLevel level,
+                               KnockoutFormat knockoutFormat, BrazilState? state = null)
+        : base(name, numberOfTeams, year, region, level)
+    {
+        ValidateNumberOfTeams(numberOfTeams);
+        KnockoutFormat = knockoutFormat;
+        ActualRound = GetInitialRound(numberOfTeams);
+        State = state ?? BrazilState.None;
+    }
+
+    private static CompetitionRound GetInitialRound(int teams)
+    {
+        return teams switch
+        {
+            64 => CompetitionRound.RoundOf64,
+            32 => CompetitionRound.RoundOf32,
+            16 => CompetitionRound.RoundOf16,
+            8 => CompetitionRound.Quarterfinal,
+            4 => CompetitionRound.Semifinal,
+            2 => CompetitionRound.Final,
+            _ => throw new NotImplementedException()
+        };
+    }
+
+    public CompetitionRound GetActualRound()
+    {
+        return ActualRound;
+    }
+
+    private void UpdateActualRound()
+    {
+        ActualRound = ActualRound switch
+        {
+            CompetitionRound.RoundOf64 => CompetitionRound.RoundOf32,
+            CompetitionRound.RoundOf32 => CompetitionRound.RoundOf16,
+            CompetitionRound.RoundOf16 => CompetitionRound.Quarterfinal,
+            CompetitionRound.Quarterfinal => CompetitionRound.Semifinal,
+            CompetitionRound.Semifinal => CompetitionRound.Final,
+            _ => throw new NotImplementedException()
+        };
+    }
+
+    private void ValidateNumberOfTeams(int teams)
+    {
+        var isValidated = (Math.Log2(teams) % 1 == 0) && teams > 1;
+        if (!isValidated)
+        {
+            throw new ArgumentException("Number of teams must be a power of 2.", nameof(NumberOfTeams));
+        }
+    }
 }
 
-public abstract class LeagueAndKnockoutCompetition : Competition
+public class LeagueAndKnockoutCompetition : Competition
 {
-    public override string Discriminator => nameof(LeagueAndKnockoutCompetition);
-    public static GroupFormat GroupFormat => GroupFormat.Double;
-    public static KnockoutFormat KnockoutFormat => KnockoutFormat.Double;
-    public override CompetitionFormat Format => CompetitionFormat.LeagueAndKnockout;
-    public int ClassifiedByGroup { get; }
-    public int NumberOfGroups { get; }
+    public int ClassifiedByGroup { get; private set; }
+    public int NumberOfGroups { get; private set; }
     public int TeamsPerGroup => NumberOfTeams / NumberOfGroups;
+    public KnockoutFormat KnockoutFormat { get; private set; }
+    public GroupFormat GroupFormat { get; private set; }
     public CompetitionRound CompetitionActualRound { get; set; }
+    public override LeagueDivision Division { get; }
+    public override RelegationRule RelegationRule { get; }
+    public override BrazilState State { get; }
+    public override CompetitionFormat CompetitionFormat => CompetitionFormat.LeagueAndKnockout;
+    public override string Discriminator => nameof(LeagueAndKnockoutCompetition);
 
     public LeagueAndKnockoutCompetition(string name, int numberOfTeams, int classifiedByGroup, int numberOfGroups,
-                                        int year, Region region, CompetitionLevel level)
+                                        int year, Region region, CompetitionLevel level, KnockoutFormat knockoutFormat,
+                                        GroupFormat groupFormat, LeagueDivision division,
+                                        RelegationRule? relegationRule = null, BrazilState? state = null)
         : base(name, numberOfTeams, year, region, level)
     {
         ClassifiedByGroup = classifiedByGroup;
         NumberOfGroups = numberOfGroups;
+
+        if (TeamsPerGroup <= 2)
+            throw new ArgumentException("Teams per group must be grater then 2.", nameof(TeamsPerGroup));
+
+        KnockoutFormat = knockoutFormat;
+        GroupFormat = groupFormat;
+        Division = division;
+        CompetitionActualRound = CompetitionRound.GroupStage;
+        RelegationRule = relegationRule ?? RelegationRule.None;
+        State = state ?? BrazilState.None;
     }
 }
