@@ -1,5 +1,4 @@
-﻿using LucasFoot.Entities.Player;
-using LucasFoot.Entities.TeamModels.Team;
+﻿using LucasFoot.Entities.TeamModels.Team;
 
 namespace LucasFoot.Entities.Competitions;
 
@@ -16,7 +15,7 @@ public class CompetitionPlacement
     public int Draws { get; set; }
     public int Losses { get; set; }
     public int TopScorePlayerId { get; set; }
-    public PlayerBase TopScorePlayer { get; set; } = null!;
+    public Player.Player TopScorePlayer { get; set; } = null!;
     public int TopAssistPlayerId { get; set; }
-    public PlayerBase TopAssistPlayer { get; set; } = null!;
+    public Player.Player TopAssistPlayer { get; set; } = null!;
 }

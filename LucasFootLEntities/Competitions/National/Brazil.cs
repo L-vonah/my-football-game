@@ -1,34 +1,35 @@
 ﻿namespace LucasFoot.Entities.Competitions.National;
 
-public class Brasileirao : MainLeagueCompetition
+public class Brasileirao : LeagueCompetition
 {
     public override string Name => "Brasileirão";
-    public override int MainClassifiedDirectly => 4;
-    public override int MainClassifiedByPlayoff => 2;
-    public override int SecondaryClassified => 6;
-    public override int Relegated => 4;
-    public override int Promoted => 0;
-    public override int NumberOfTeams => 20;
     public override LeagueDivision Division => LeagueDivision.First;
     public override CompetitionLevel Level => CompetitionLevel.National;
+    public override RelegationRule RelegationRule => RelegationRule.General;
+    public override int NumberOfTeams => 20;
+
+    public Brasileirao(int year) : base(year) { }
 }
 
 public class BrasileiraoB : LeagueCompetition
 {
-    public override int Relegated => 4;
-    public override int Promoted => 4;
     public override string Name => "Brasileirão Série B";
     public override int NumberOfTeams => 20;
     public override LeagueDivision Division => LeagueDivision.Second;
     public override CompetitionLevel Level => CompetitionLevel.National;
+    public override RelegationRule RelegationRule => RelegationRule.General;
+
+    public BrasileiraoB(int year) : base(year) { }
+
 }
 
 public class BrasileiraoC : LeagueCompetition
 {
-    public override int Relegated => 4;
-    public override int Promoted => 4;
     public override string Name => "Brasileirão Série C";
     public override int NumberOfTeams => 20;
     public override LeagueDivision Division => LeagueDivision.Third;
     public override CompetitionLevel Level => CompetitionLevel.National;
+    public override RelegationRule RelegationRule => RelegationRule.General;
+
+    public BrasileiraoC(int year) : base(year) { }
 }

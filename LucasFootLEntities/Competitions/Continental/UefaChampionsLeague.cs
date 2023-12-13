@@ -9,4 +9,7 @@ public class UefaChampionsLeague : LeagueAndKnockoutCompetition
     public override int NumberOfTeams => 32;
     public override CompetitionLevel Level => CompetitionLevel.Continental;
     public override CompetitionFormat Format => CompetitionFormat.LeagueAndKnockout;
+    public override RelegationRule RelegationRule => RelegationRule.None;
+
+    public UefaChampionsLeague(int year) : base(year) { }
 }
