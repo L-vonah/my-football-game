@@ -22,6 +22,7 @@ public class FootballContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<CompetitionPlacement>(a =>
         {
             a.HasKey(a => new { a.TeamId, a.ManagerId, a.CompetitionId });

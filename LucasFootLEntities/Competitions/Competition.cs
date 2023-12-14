@@ -8,6 +8,7 @@ public abstract class Competition
     public int Year { get; private set; }
     public int NumberOfTeams { get; private set; }
     public string Name { get; private set; }
+    public bool IsFinished { get; private set; }
     public CompetitionLevel Level { get; private set; }
     public Region Region { get; private set; }
     public abstract CompetitionFormat CompetitionFormat { get; }
@@ -31,6 +32,21 @@ public abstract class Competition
         Year = year;
         Region = region;
         Level = level;
+    }
+
+    public bool TryFinishCompetition()
+    {
+        if (!IsFinished && AllMatchesFinished())
+        {
+            IsFinished = true;
+        }
+
+        return IsFinished;
+    }
+
+    private bool AllMatchesFinished()
+    {
+        throw new NotImplementedException();
     }
 }
 
