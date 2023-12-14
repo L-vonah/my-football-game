@@ -32,5 +32,5 @@ public class MatchEvent
 
 public enum MatchEventType
 {
-    Goal, YellowCard, RedCard, Substitution, PenaltyGoal, PenaltyMiss
+    Goal, YellowCard, RedCard, Substitution, PenaltyGoal, PenaltyMiss, Injury
 }
