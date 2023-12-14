@@ -1,4 +1,5 @@
-﻿using LucasFoot.Entities.TeamModels.Team;
+﻿using LucasFoot.Entities.Match;
+using LucasFoot.Entities.TeamModels.Team;
 
 namespace LucasFoot.Entities.Competitions;
 
@@ -17,6 +18,7 @@ public abstract class Competition
     public abstract BrazilState State { get; }
     public abstract string Discriminator { get; }
     public ICollection<CompetitionTeam>? Teams { get; set; }
+    public ICollection<CompetitionMatch>? Matches { get; set; }
 
     private CompetitionRound _round;
     protected CompetitionRound ActualRound

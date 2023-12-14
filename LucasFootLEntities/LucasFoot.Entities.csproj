@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Competitions\Continental\" />
-    <Folder Include="Competitions\Global\" />
-    <Folder Include="Competitions\Local\" />
-    <Folder Include="Competitions\National\" />
+    <Compile Remove="Competitions\Global\**" />
+    <EmbeddedResource Remove="Competitions\Global\**" />
+    <None Remove="Competitions\Global\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="TeamModels\Stadium\" />
   </ItemGroup>
 
