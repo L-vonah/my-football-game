@@ -28,7 +28,7 @@ public enum Foot
     [Description("B")] Both
 }
 
-public abstract class PlayerBase
+public abstract class Player
 {
     public int Id { get; set; }
 
@@ -52,7 +52,7 @@ public class TeamPlayerRecord
     public int TeamId { get; set; }
     public Team Team { get; set; } = null!;
     public int PlayerId { get; set; }
-    public PlayerBase Player { get; set; } = null!;
+    public Player Player { get; set; } = null!;
     public double Salary { get; set; }
     public int Goals { get; set; }
     public int Assists { get; set; }

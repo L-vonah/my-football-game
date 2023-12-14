@@ -11,16 +11,14 @@ public class FootballContext : DbContext
     public virtual DbSet<CompetitionPlacement> Placements { get; set; } = null!;
     public virtual DbSet<Competition> Competitions { get; set; } = null!;
     public virtual DbSet<LeagueCompetition> LeagueCompetitions { get; set; } = null!;
-    public virtual DbSet<MainLeagueCompetition> MainLeagueCompetitions { get; set; } = null!;
     public virtual DbSet<KnockoutCompetition> KnockoutCompetitions { get; set; } = null!;
     public virtual DbSet<LeagueAndKnockoutCompetition> LeagueAndKnockoutCompetitions { get; set; } = null!;
     public virtual DbSet<Manager> Managers { get; set; } = null!;
     public virtual DbSet<TeamManagerRecord> TeamManagerRecords { get; set; } = null!;
-    public virtual DbSet<PlayerBase> Players { get; set; } = null!;
+    public virtual DbSet<Player> Players { get; set; } = null!;
     public virtual DbSet<TeamPlayerRecord> TeamPlayerRecords { get; set; } = null!;
     public virtual DbSet<Team> Teams { get; set; } = null!;
     public virtual DbSet<CompetitionTeam> CompetitionTeams { get; set; } = null!;
-
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -33,7 +31,6 @@ public class FootballContext : DbContext
             c.HasKey(c => c.Id);
             c.HasDiscriminator<string>("Discriminator")
                 .HasValue<LeagueCompetition>(nameof(LeagueCompetition))
-                .HasValue<MainLeagueCompetition>(nameof(MainLeagueCompetition))
                 .HasValue<KnockoutCompetition>(nameof(KnockoutCompetition))
                 .HasValue<LeagueAndKnockoutCompetition>(nameof(LeagueAndKnockoutCompetition));
         });
@@ -68,7 +65,7 @@ public class FootballContext : DbContext
                 .WithMany(p => p.Teams)
                 .HasForeignKey(p => p.PlayerId);
         });
-        modelBuilder.Entity<PlayerBase>(p =>
+        modelBuilder.Entity<Player>(p =>
         {
             p.HasKey(p => p.Id);
         });

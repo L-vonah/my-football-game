@@ -19,12 +19,12 @@ public class Team
     public ICollection<TeamManagerRecord> Managers { get; set; } = null!;
     public ICollection<TeamPlayerRecord> Players { get; set; } = null!;
 
-    public bool CanAddPlayer(PlayerBase player)
+    public bool CanAddPlayer(Player.Player player)
     {
         return Players.Count < MaxPlayers && !Players.Any(p => p.Player.Id == player.Id);
     }
 
-    public bool CanRemovePlayer(PlayerBase player)
+    public bool CanRemovePlayer(Player.Player player)
     {
         return Players.Count > MinPlayers && Players.Any(p => p.Player.Id == player.Id);
     }

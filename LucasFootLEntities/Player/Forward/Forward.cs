@@ -1,21 +1,21 @@
 ﻿namespace LucasFoot.Entities.Player.Forward;
 
-public class RightWinger : PlayerBase
+public class RightWinger : Player
 {
     public override Position Position => Position.RightWinger;
 }
 
-public class LeftWinger : PlayerBase
+public class LeftWinger : Player
 {
     public override Position Position => Position.LeftWinger;
 }
 
-public class SecondStriker : PlayerBase
+public class SecondStriker : Player
 {
     public override Position Position => Position.SecondStriker;
 }
 
-public class CenterForward : PlayerBase
+public class CenterForward : Player
 {
     public override Position Position => Position.CenterForward;
 }

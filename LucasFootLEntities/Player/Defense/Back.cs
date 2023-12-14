@@ -1,21 +1,21 @@
 ﻿namespace LucasFoot.Entities.Player.Defense;
 
-public class Goalkeeper : PlayerBase
+public class Goalkeeper : Player
 {
     public override Position Position => Position.Goalkeeper;
 }
 
-public class RightBack : PlayerBase
+public class RightBack : Player
 {
     public override Position Position => Position.RightBack;
 }
 
-public class LeftBack : PlayerBase
+public class LeftBack : Player
 {
     public override Position Position => Position.LeftBack;
 }
 
-public class CenterBack : PlayerBase
+public class CenterBack : Player
 {
     public override Position Position => Position.CenterBack;
 }
