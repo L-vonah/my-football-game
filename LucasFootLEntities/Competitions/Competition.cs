@@ -100,11 +100,11 @@ public class KnockoutCompetition : Competition
     {
         ValidateNumberOfTeams(numberOfTeams);
         KnockoutFormat = knockoutFormat;
-        ActualRound = GetInitialRound(numberOfTeams);
+        ActualRound = GetKnockoutRoundByNumberOfTeams(numberOfTeams);
         State = state ?? BrazilState.None;
     }
 
-    private static CompetitionRound GetInitialRound(int teams)
+    private static CompetitionRound GetKnockoutRoundByNumberOfTeams(int teams)
     {
         return teams switch
         {
@@ -114,7 +114,8 @@ public class KnockoutCompetition : Competition
             8 => CompetitionRound.Quarterfinal,
             4 => CompetitionRound.Semifinal,
             2 => CompetitionRound.Final,
-            _ => throw new NotImplementedException()
+            _ => throw new ArgumentException(
+                "Number of teams must be less than or equal to 64 and greather than 1.", nameof(NumberOfTeams))
         };
     }
 
@@ -123,7 +124,7 @@ public class KnockoutCompetition : Competition
         return ActualRound;
     }
 
-    private void UpdateActualRound()
+    public void UpdateActualRound() // check if all matches are finished
     {
         ActualRound = ActualRound switch
         {
@@ -132,7 +133,7 @@ public class KnockoutCompetition : Competition
             CompetitionRound.RoundOf16 => CompetitionRound.Quarterfinal,
             CompetitionRound.Quarterfinal => CompetitionRound.Semifinal,
             CompetitionRound.Semifinal => CompetitionRound.Final,
-            _ => throw new NotImplementedException()
+            _ => ActualRound
         };
     }
 
@@ -153,30 +154,68 @@ public class LeagueAndKnockoutCompetition : Competition
     public int TeamsPerGroup => NumberOfTeams / NumberOfGroups;
     public KnockoutFormat KnockoutFormat { get; private set; }
     public GroupFormat GroupFormat { get; private set; }
-    public CompetitionRound CompetitionActualRound { get; set; }
     public override LeagueDivision Division { get; }
     public override RelegationRule RelegationRule { get; }
     public override BrazilState State { get; }
     public override CompetitionFormat CompetitionFormat => CompetitionFormat.LeagueAndKnockout;
     public override string Discriminator => nameof(LeagueAndKnockoutCompetition);
 
-    public LeagueAndKnockoutCompetition(string name, int numberOfTeams, int classifiedByGroup, int numberOfGroups,
-                                        int year, Region region, CompetitionLevel level, KnockoutFormat knockoutFormat,
-                                        GroupFormat groupFormat, LeagueDivision division,
-                                        RelegationRule? relegationRule = null, BrazilState? state = null)
+    public LeagueAndKnockoutCompetition(string name, int numberOfTeams, int classifiedByGroup, int numberOfGroups, int year,
+                                        Region region, CompetitionLevel level, KnockoutFormat knockoutFormat, GroupFormat groupFormat,
+                                        LeagueDivision division, RelegationRule? relegationRule = null, BrazilState? state = null)
         : base(name, numberOfTeams, year, region, level)
     {
         ClassifiedByGroup = classifiedByGroup;
         NumberOfGroups = numberOfGroups;
 
         if (TeamsPerGroup <= 2)
-            throw new ArgumentException("Teams per group must be grater then 2.", nameof(TeamsPerGroup));
+            throw new ArgumentException("Teams per group must be greater then 2.", nameof(TeamsPerGroup));
 
         KnockoutFormat = knockoutFormat;
         GroupFormat = groupFormat;
         Division = division;
-        CompetitionActualRound = CompetitionRound.GroupStage;
+        ActualRound = CompetitionRound.GroupStage;
         RelegationRule = relegationRule ?? RelegationRule.None;
         State = state ?? BrazilState.None;
+    }
+
+    public CompetitionRound GetActualRound()
+    {
+        return ActualRound;
+    }
+
+    public void UpdateActualRound()  // check if all matches are finished
+    {
+        if (ActualRound == CompetitionRound.GroupStage)
+        {
+            var allClassified = ClassifiedByGroup * NumberOfGroups;
+            ActualRound = GetKnockoutRoundByNumberOfTeams(allClassified);
+            return;
+        }
+
+        ActualRound = ActualRound switch
+        {
+            CompetitionRound.RoundOf64 => CompetitionRound.RoundOf32,
+            CompetitionRound.RoundOf32 => CompetitionRound.RoundOf16,
+            CompetitionRound.RoundOf16 => CompetitionRound.Quarterfinal,
+            CompetitionRound.Quarterfinal => CompetitionRound.Semifinal,
+            CompetitionRound.Semifinal => CompetitionRound.Final,
+            _ => ActualRound
+        };
+    }
+
+    private CompetitionRound GetKnockoutRoundByNumberOfTeams(int teams)
+    {
+        return teams switch
+        {
+            64 => CompetitionRound.RoundOf64,
+            32 => CompetitionRound.RoundOf32,
+            16 => CompetitionRound.RoundOf16,
+            8 => CompetitionRound.Quarterfinal,
+            4 => CompetitionRound.Semifinal,
+            2 => CompetitionRound.Final,
+            _ => throw new ArgumentException(
+                "Number of teams must be less than or equal to 64 and greather than 1.", nameof(NumberOfTeams))
+        };
     }
 }
